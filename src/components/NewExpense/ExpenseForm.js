@@ -6,14 +6,14 @@ let id = 4;
 
 const ExpenseForm = (props) => {
     const addExpenseData = props.onExpenseHandler;
-    // const [enteredTitle, setEnteredtitle ] = useState('');
-    // const [enteredAmount, setEnteredAmount ] = useState('');
-    // const [enteredDate, setEnteredDate ] = useState('');
+
     const [userInput, setUserInput] = useState({
         enteredTitle: "",
         enteredAmount: "",
         enteredDate: "",
     });
+
+    const [formBool, setFormBool] = useState(false);
 
     const titleChangeHandler = (event) => {
         // setEnteredtitle(event.target.value)
@@ -61,7 +61,26 @@ const ExpenseForm = (props) => {
         });
     };
 
-    return (
+    const onClickCancelandAddForm = () =>{
+        setFormBool((prevState)=>{
+            return !prevState;
+        });
+        setUserInput((prevState) => {
+            return {
+                enteredAmount: "",
+                enteredDate: "",
+                enteredTitle: "",
+            };
+        });
+    };
+
+    const addForm = (
+        <div>
+            <button onClick={onClickCancelandAddForm}>Add New Expense</button>
+        </div>
+    );
+
+    const formJsx = (
         <form onSubmit={submitHandler}>
             <div className="new-expense__controls">
                 <div className="new-expense__control">
@@ -94,10 +113,22 @@ const ExpenseForm = (props) => {
                 </div>
             </div>
             <div className="new-expense__actions">
+                <button type="button" onClick={onClickCancelandAddForm}>Cancel</button>
                 <button type="submit">Add Expense</button>
             </div>
         </form>
     );
+    
+    let filteredForm = formJsx;
+
+    if(formBool === false){
+        filteredForm = addForm;
+        
+    };
+
+    
+
+    return filteredForm;
 };
 
 export default ExpenseForm;
